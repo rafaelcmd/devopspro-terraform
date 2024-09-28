@@ -7,14 +7,6 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
-
-data "aws_vpc" "default" {
-  default = true
-}
-
 resource "aws_subnet" "devopspro_tf_subnet" {
   vpc_id            = data.aws_vpc.default.id
   availability_zone = "us-east-1a"
@@ -35,10 +27,6 @@ resource "aws_security_group" "devopspro_tf_sg" {
     }
 }
 
-data "aws_key_pair" "devopspro_tf_key" {
-  key_name = "devopspro_tf_keypair"
-}
-
 resource "aws_instance" "devopspro_tf_ec2" {
   ami           = "ami-0ebfd941bbafe70c6"
   instance_type = "t2.micro"
@@ -51,14 +39,4 @@ resource "aws_instance" "devopspro_tf_ec2" {
 
   subnet_id = aws_subnet.devopspro_tf_subnet.id
   vpc_security_group_ids = [aws_security_group.devopspro_tf_sg.id]
-}
-
-# Output the public IP address of the EC2 instance
-output "ec2_public_ip" {
-  value = aws_instance.devopspro_tf_ec2.public_ip
-}
-
-# Output the instance ID of the EC2 instance
-output "ec2_instance_id" {
-  value = aws_instance.devopspro_tf_ec2.id
 }
