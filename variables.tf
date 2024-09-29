@@ -58,16 +58,10 @@ variable "security_group_description" {
   description = "The description of the security group"
 }
 
-variable "security_group_ingress_from_port" {
-  default = 22
-  type = number
-  description = "The start of the port range for the ingress rule"
-}
-
-variable "security_group_ingress_to_port" {
-  default = 22
-  type = number
-  description = "The end of the port range for the ingress rule"
+variable "security_group_ingress_ports" {
+    default = [22, 80]
+    type = list(number)
+    description = "The ports to allow traffic"
 }
 
 variable "security_group_ingress_protocol" {
