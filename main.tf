@@ -9,32 +9,33 @@ terraform {
 
 resource "aws_subnet" "devopspro_tf_subnet" {
   vpc_id            = data.aws_vpc.default.id
-  availability_zone = "us-east-1a"
+  availability_zone = var.subnet_availability_zone
   cidr_block        = cidrsubnet(data.aws_vpc.default.cidr_block, 4, 2)
 }
 
 
 resource "aws_security_group" "devopspro_tf_sg" {
-  name        = "DevOpsPro_TF_SG"
-  description = "Allow inbound traffic on port 22 and 80"
+  name        = var.security_group_name
+  description = var.security_group_description
   vpc_id      = data.aws_vpc.default.id
 
     ingress {
-      from_port = 22
-      to_port   = 22
-      protocol  = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      from_port = var.security_group_ingress_from_port
+      to_port   = var.security_group_ingress_to_port
+      protocol  = var.security_group_ingress_protocol
+      cidr_blocks = var.security_group_cidr_blocks
     }
 }
 
 resource "aws_instance" "devopspro_tf_ec2" {
-  ami           = "ami-0ebfd941bbafe70c6"
-  instance_type = "t2.micro"
-  associate_public_ip_address = true
+  ami           = var.ec2_ami
+  instance_type = var.ec2_instance_type
+  associate_public_ip_address = var.ec2_associate_public_ip_address
   key_name      = data.aws_key_pair.devopspro_tf_key.key_name
+  count = var.ec2_instance_count
 
   tags = {
-    Name = "DevOpsPro_TF_EC2"
+    Name = var.ec2_instance_name
   }
 
   subnet_id = aws_subnet.devopspro_tf_subnet.id
