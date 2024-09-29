@@ -35,7 +35,7 @@ resource "aws_instance" "devopspro_tf_ec2" {
   count = var.ec2_instance_count
 
   tags = {
-    Name = var.ec2_instance_name
+    Name = "${var.ec2_instance_name}-${count.index}"
   }
 
   subnet_id = aws_subnet.devopspro_tf_subnet.id
