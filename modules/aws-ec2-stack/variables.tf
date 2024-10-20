@@ -1,9 +1,3 @@
-variable "provider_region" {
-  default = "us-east-1"
-  type = string
-  description = "The region in which to create the resources"
-}
-
 variable "ec2_instance_name" {
   default = "DevOpsPro_TF_EC2"
   type = string
@@ -64,9 +58,9 @@ variable "security_group_description" {
 }
 
 variable "security_group_ingress_ports" {
-  default = [22, 80]
-  type = list(number)
-  description = "The ports to allow traffic"
+    default = [22, 80]
+    type = list(number)
+    description = "The ports to allow traffic"
 }
 
 variable "security_group_ingress_protocol" {
